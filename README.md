@@ -44,19 +44,15 @@ search criteria.
 
 ## Installation
 
-<!---
-
 To install the stable version of the package from CRAN:
 
-
-```r
+``` r
 install.packages("medrxivr")
 library(medrxivr)
 ```
 
---->
-
-To install `medrxivr`, use the following code:
+Alternatively, to install the development version from GitHub, use the
+following code:
 
 ``` r
 install.packages("devtools")
@@ -127,10 +123,14 @@ examples above) to `mx_search()` to search the preprint records using an
 advanced search strategy.
 
 ``` r
+# Import the medrxiv database
+preprint_data <- mx_snapshot()
+#> Using medRxiv snapshot - 2021-01-28 09:31
 
 # Perform a simple search
 results <- mx_search(data = preprint_data,
                      query ="dementia")
+#> Found 192 record(s) matching your search.
 
 # Perform an advanced search
 topic1  <- c("dementia","vascular","alzheimer's")  # Combined with Boolean OR
@@ -139,6 +139,25 @@ myquery <- list(topic1, topic2)                    # Combined with Boolean AND
 
 results <- mx_search(data = preprint_data,
                      query = myquery)
+#> Found 70 record(s) matching your search.
+```
+
+You can also explore which search terms are contributing most to your
+search by setting `report = TRUE`:
+
+``` r
+results <- mx_search(data = preprint_data,
+                     query = myquery,
+                     report = TRUE)
+#> Found 70 record(s) matching your search.
+#> Total topic 1 records: 1078
+#> dementia: 192
+#> vascular: 917
+#> alzheimer's: 0
+#> Total topic 2 records: 203
+#> lipids: 74
+#> statins: 25
+#> cholesterol: 136
 ```
 
 ## Further functionality
@@ -151,7 +170,6 @@ results to a .BIB file so that they can be easily imported into a
 reference manager (e.g. Zotero, Mendeley).
 
 ``` r
-
 mx_export(data = results,
           file = "mx_search_results.bib")
 ```
@@ -163,7 +181,6 @@ Pass the results of your search above (the `results` object) to the
 found by your search.
 
 ``` r
-
 mx_download(results,        # Object returned by mx_search(), above
             "pdf/",         # Directory to save PDFs to 
             create = TRUE)  # Create the directory if it doesn't exist
@@ -178,7 +195,7 @@ To access the raw data returned by the API, the `clean` argument should
 set to `FALSE`:
 
 ``` r
-mx_api_content(to_date = "2019-07-01", clean = TRUE)
+mx_api_content(to_date = "2019-07-01", clean = FALSE)
 ```
 
 See [this
@@ -197,6 +214,22 @@ See here for the [code used to take the daily
 snapshot](https://github.com/mcguinlu/medrxivr-data) and [the code that
 powers the `medrxivr` web
 app](https://github.com/mcguinlu/medrxivr-app).
+
+## Other tools/packages for working with medRxiv/bioRxiv data
+
+The focus of `medrxivr` is on providing tools to allow users to import
+and then search medRxiv and bioRxiv data. Below are a list of
+complementary packages that provide distinct but related functionality
+when working with medRxiv and bioRxiv data:
+
+  - [`rbiorxiv`](https://github.com/nicholasmfraser/rbiorxiv) by
+    [Nicholas Fraser](https://github.com/nicholasmfraser) provides
+    access to the same medRxiv and bioRxiv *content* data as `medrxivr`,
+    but also provides access to the *usage* data (e.g. downloads per
+    month) that the Cold Spring Harbour Laboratory API offers. This is
+    useful if you wish to explore, for example, [how the number of PDF
+    downloads from bioRxiv has grown over
+    time.](https://github.com/nicholasmfraser/rbiorxiv#pdf-downloads-over-time)
 
 ## Code of conduct
 

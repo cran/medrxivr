@@ -8,9 +8,14 @@ JOSS
 MedRxiv
 Mendeley
 NCOV
+Ncov
+Nn
+O'Hare
+Oo
 PDF's
 Preprint
 Spannbauer
+Vv
 YYYY
 Zotero
 api
@@ -18,6 +23,9 @@ ation
 bioRxiv
 biorxiv
 capitalisation
+capitalise
+capitalised
+coronavirus
 doi
 dontrun
 donttest
@@ -30,6 +38,8 @@ mcguinlu
 medRxiv
 medrxiv
 mx
+nCOV
+nCoV
 ncov
 onboarded
 preprint
@@ -41,6 +51,6 @@ regexes
 summarised
 tempdir
 tempfile
-th
 tibbles
+uncapitalised
 ungrouped

@@ -3,9 +3,11 @@
 #' @description Provides programmatic access to all preprints available through
 #'   the Cold Spring Harbour Laboratory API, which serves both the medRxiv and
 #'   bioRxiv preprint repositories.
-#' @param from_date Earliest date of interest. Defaults to 1st June 2019
-#'   (earliest medRxiv record was posted on 25th June 2019).
-#' @param to_date Latest date of interest. Defaults to current date.
+#' @param from_date Earliest date of interest, written as "YYYY-MM-DD". Defaults
+#'   to 1st Jan 2013 ("2013-01-01"), ~6 months prior to earliest preprint
+#'   registration date.
+#' @param to_date Latest date of interest, written as "YYYY-MM-DD". Defaults to
+#'   current date.
 #' @param include_info Logical, indicating whether to include variables
 #'   containing information returned by the API (e.g. API status, cursor number,
 #'   total count of papers, etc). Default is FALSE.
@@ -24,7 +26,7 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' if(interactive()){
 #' mx_data <- mx_api_content(from_date = "2020-01-01",
 #' to_date = "2020-01-07")
 #' }
@@ -58,8 +60,9 @@ mx_api_content <- function(from_date = "2013-01-01",
   details <- api_to_df(details_link)
 
   count <- details$messages[1, 6]
-  message("Total number of records found: ", count)
   pages <- floor(count / 100)
+
+  message("Estimated total number of records as per API metadata: ", count)
 
   # Create empty dataset
   df <- details$collection %>%
@@ -97,6 +100,13 @@ mx_api_content <- function(from_date = "2013-01-01",
 
   # Clean data
 
+  message("Number of records retrieved from API: ", nrow(df))
+
+  if (nrow(df)!= count) {
+    message(paste0("The estimated \"total number\" as per the metadata ", #nocov
+    "can sometimes be artifically inflated."))                            #nocov
+  }
+
   if (clean == TRUE) {
     df <- clean_api_df(df)
   }
@@ -133,7 +143,7 @@ mx_api_content <- function(from_date = "2013-01-01",
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' if(interactive()){
 #' mx_data <- mx_api_doi("10.1101/2020.02.25.20021568")
 #' }
 #' @importFrom dplyr %>%

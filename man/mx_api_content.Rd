@@ -13,10 +13,12 @@ mx_api_content(
 )
 }
 \arguments{
-\item{from_date}{Earliest date of interest. Defaults to 1st June 2019
-(earliest medRxiv record was posted on 25th June 2019).}
+\item{from_date}{Earliest date of interest, written as "YYYY-MM-DD". Defaults
+to 1st Jan 2013 ("2013-01-01"), ~6 months prior to earliest preprint
+registration date.}
 
-\item{to_date}{Latest date of interest. Defaults to current date.}
+\item{to_date}{Latest date of interest, written as "YYYY-MM-DD". Defaults to
+current date.}
 
 \item{clean}{Logical, defaulting to TRUE, indicating whether to clean the
 data returned by the API. If TRUE, variables containing absolute paths to
@@ -41,7 +43,7 @@ Provides programmatic access to all preprints available through
   bioRxiv preprint repositories.
 }
 \examples{
-\donttest{
+if(interactive()){
 mx_data <- mx_api_content(from_date = "2020-01-01",
 to_date = "2020-01-07")
 }

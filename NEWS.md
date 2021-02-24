@@ -1,3 +1,14 @@
+# medrxivr 0.0.5
+
+Major changes:
+
+* Improved error handling to address a common bug that causes extraction from the API to fail. The "total number" of records element of the API metadata is frequently artificially inflated. This leads to an overestimation of the number of pages of records, which in turn caused the extraction function to fail at the very end when `mx_api_content()` encounters an empty page. This error has been changed to informative messaging about the expected (as per the metadata) and actual (`nrows()` of returned dataset) number of retrievable records.
+* New functionality added to `mx_search()` allows users to view the number of "hits" (records returned) for each individual element of the search. An extra parameter called `report` has been added, which gives the user the option to switch this functionality on or off. The default value for this parameter is set to FALSE. This functionality was added by [James O'Hare](https://github.com/jamesohare1) in response to [Issue #13.](https://github.com/ropensci/medrxivr/issues/13)
+* Users can now pass a vector of terms to the `NOT` parameter rather than a single exclusion term.
+* New functionality to allow for user-friendly search operators, including wildcards ("randomi*ation" will now find "randomisation" and "randomization") and the NEAR operator ("systematic NEAR1 review" will find "systematic review" and "systematic _<any-other-word>_ review")
+* A new argument, `auto_caps`, in the `mx_search()` function to allow for automatic capitalisation of the first character in each search term (e.g. with `auto_caps = TRUE`, "dementia" will be automatically converted to "[Dd]ementia" which will find "**d**ementia" and also "**D**ementia"). This replaces the recommendation that users capitalise the first character themselves using square brackets. However, if user defined alternative are already in place for the first character of the search term, then these are left untouched.
+* A helper function, `mx_caps()`, allows users to wrap search terms to find all possible combinations of upper- and lower-case letters in that term. For example, `mx_caps("ncov")` converts the term to "[Nn][Cc][Oo][Vv]" which will find "NCOV", "Ncov", "nCOV", "nCoV", etc.
+
 # medrxivr 0.0.4
 
 Major changes:
