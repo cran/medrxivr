@@ -31,11 +31,12 @@ Download PDF's of all the papers in your search results
 \examples{
 \donttest{
 mx_results <- mx_search(mx_snapshot(), query = "10.1101/2020.02.25.20021568")
-mx_download(mx_results, directory=tempdir())
+mx_download(mx_results, directory = tempdir())
 }
 }
 \seealso{
 Other helper: 
+\code{\link{mx_caps}()},
 \code{\link{mx_crosscheck}()},
 \code{\link{mx_export}()}
 }

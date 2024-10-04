@@ -2,7 +2,7 @@
 % Please edit documentation in R/mx_syntax.R
 \name{mx_caps}
 \alias{mx_caps}
-\title{Search term wrapper that allows for different capitalisation of term}
+\title{Search term wrapper that allows for different capitalization of term}
 \usage{
 mx_caps(x)
 }
@@ -15,8 +15,8 @@ The input string is return, but with each non-space character
   example, mx_caps("ncov") returns "[Nn][Cc][Oo][Vv]"
 }
 \description{
-Inspired by the varying capitalisation of "NCOV" during the
-  coronavirus pandemic (e.g. ncov, nCoV, NCOV, nCOV), this function allows
+Inspired by the varying capitalization of "NCOV" during the
+  corona virus pandemic (e.g. ncov, nCoV, NCOV, nCOV), this function allows
   for all possible configurations of lower- and upper-case letters in your
   search term.
 }
@@ -29,3 +29,10 @@ mx_search(mx_snapshot("6c4056d2cccd6031d92ee4269b1785c6ec4d555b"), query)
 }
 
 }
+\seealso{
+Other helper: 
+\code{\link{mx_crosscheck}()},
+\code{\link{mx_download}()},
+\code{\link{mx_export}()}
+}
+\concept{helper}

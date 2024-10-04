@@ -43,9 +43,11 @@ Provides programmatic access to all preprints available through
   bioRxiv preprint repositories.
 }
 \examples{
-if(interactive()){
-mx_data <- mx_api_content(from_date = "2020-01-01",
-to_date = "2020-01-07")
+if (interactive()) {
+  mx_data <- mx_api_content(
+    from_date = "2020-01-01",
+    to_date = "2020-01-07"
+  )
 }
 }
 \seealso{

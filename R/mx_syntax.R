@@ -1,7 +1,7 @@
-#' Search term wrapper that allows for different capitalisation of term
+#' Search term wrapper that allows for different capitalization of term
 #'
-#' @description Inspired by the varying capitalisation of "NCOV" during the
-#'   coronavirus pandemic (e.g. ncov, nCoV, NCOV, nCOV), this function allows
+#' @description Inspired by the varying capitalization of "NCOV" during the
+#'   corona virus pandemic (e.g. ncov, nCoV, NCOV, nCOV), this function allows
 #'   for all possible configurations of lower- and upper-case letters in your
 #'   search term.
 #'
@@ -11,6 +11,7 @@
 #'   repeated in lower- and upper-case, and enclosed in square brackets. For
 #'   example, mx_caps("ncov") returns "[Nn][Cc][Oo][Vv]"
 #' @export
+#' @family helper
 #'
 #' @examples
 #' \donttest{
@@ -21,16 +22,15 @@
 #' }
 #'
 mx_caps <- function(x) {
-
-  x_v <- stringr::str_to_lower(x) %>%
-    stringr::str_split(stringr::boundary()) %>%
+  x_v <- stringr::str_to_lower(x) |>
+    stringr::str_split(stringr::boundary()) |>
     unlist()
 
   for (position in 1:nchar(x)) {
     if (x_v[position] == " ") {
       next
     }
-    x_v[position] <- paste0("[",stringr::str_to_upper(x_v[position]),x_v[position],"]")
+    x_v[position] <- paste0("[", stringr::str_to_upper(x_v[position]), x_v[position], "]")
   }
 
   x_v <- paste0(x_v, collapse = "")
@@ -49,40 +49,35 @@ mx_caps <- function(x) {
 #'   term.
 #' @keywords internal
 
-fix_caps <- function(x){
+fix_caps <- function(x) {
+  x_clean <- lapply(x, function(y) {
+    purrr::map_chr(y, function(z) {
+      # Stop if first character in string is square-brackets
+      if (grepl("\\[", substr(z, 1, 1)) == TRUE) {
+        return(z)
+      }
 
-  x_clean <- lapply(x, function(y){
+      z_v <- stringr::str_squish(z) %>%
+        lapply(function(z) {
+          paste0(
+            "[",
+            toupper(substr(z, 1, 1)),
+            tolower(substr(z, 1, 1)),
+            "]",
+            substr(z, 2, nchar(z))
+          )
+        }) %>%
+        unlist()
 
-     purrr::map_chr(y, function(z){
-
-       # Stop if first character in string is square-brackets
-       if (grepl("\\[",substr(z,1,1))==TRUE) {
-         return(z)
-       }
-
-       z_v <- stringr::str_squish(z) %>%
-         lapply(function(z) {
-           paste0("[",
-                  toupper(substr(z, 1, 1)),
-                  tolower(substr(z, 1, 1)),
-                  "]",
-                  substr(z, 2, nchar(z)))
-         }) %>%
-         unlist()
-
-       return(z_v)
-     })
-
-    }
-
-  )
+      return(z_v)
+    })
+  })
 
   if (!is.list(x)) {
     x_clean <- unlist(x_clean)
   }
 
   return(x_clean)
-
 }
 
 
@@ -93,20 +88,18 @@ fix_caps <- function(x){
 #' @keywords internal
 
 fix_wildcard <- function(x) {
-
   x_clean <- lapply(x, function(y) {
-   purrr::map_chr(y, function(z) {
+    purrr::map_chr(y, function(z) {
       stringr::str_replace_all(z, "\\*", "([[:alpha:]])")
     })
   })
 
-if (!is.list(x)) {
-  x_clean <- unlist(x_clean)
-}
+  if (!is.list(x)) {
+    x_clean <- unlist(x_clean)
+  }
 
 
   return(x_clean)
-
 }
 
 
@@ -117,11 +110,10 @@ if (!is.list(x)) {
 #' @keywords internal
 
 fix_near <- function(x) {
-
   x_clean <- lapply(x, function(y) {
     purrr::map_chr(y, function(z) {
-      stringr::str_replace_all(z,"\\s?[Nn][Ee][Aa][Rr](\\d)\\s?","NEAR\\1") %>%
-      stringr::str_replace_all("NEAR(\\d)","(\\\\s+)([[:graph:]]+\\\\s+){0,\\1}")
+      stringr::str_replace_all(z, "\\s?[Nn][Ee][Aa][Rr](\\d)\\s?", "NEAR\\1") %>%
+        stringr::str_replace_all("NEAR(\\d)", "(\\\\s+)([[:graph:]]+\\\\s+){0,\\1}")
     })
   })
 
@@ -130,7 +122,4 @@ fix_near <- function(x) {
   }
 
   return(x_clean)
-
 }
-
-

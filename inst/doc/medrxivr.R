@@ -45,7 +45,7 @@ knitr::include_graphics("data_sources.png")
 #                       query = myquery)
 #  
 
-## ---- eval = TRUE, echo = FALSE-----------------------------------------------
+## ----eval = TRUE, echo = FALSE------------------------------------------------
 
 mx_variables <-
   data.frame(
@@ -89,13 +89,13 @@ knitr::kable(mx_variables, format = "html") %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   kableExtra::column_spec(2, width = "30em")
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  
 #  mx_export(data = mx_results,
 #            file = tempfile(fileext = ".bib"))
 #  
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  
 #  mx_download(results,        # Object returned by mx_search
 #              tempdir(),      # Temporary directory to save PDFs to

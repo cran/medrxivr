@@ -50,7 +50,6 @@ mx_search <- function(data = NULL,
                       NOT = "",
                       deduplicate = TRUE,
                       report = FALSE) {
-
   # Error handling ----------------------------------------------------------
 
   # Require search terms
@@ -122,7 +121,9 @@ mx_search <- function(data = NULL,
   }
 
   # Return full search results
-  if (num_results > 0) {mx_results}
+  if (num_results > 0) {
+    mx_results
+  }
 }
 
 
@@ -143,13 +144,12 @@ mx_reporter <- function(mx_data,
                         fields,
                         deduplicate,
                         NOT) {
-
-  #run mx_search on individual topics, count hits and print message
+  # run mx_search on individual topics, count hits and print message
   for (i in 1:length(query)) {
-
-    ifelse (is.list(query),
-            query_i <- query[[i]],
-            query_i <- query[i])
+    ifelse(is.list(query),
+      query_i <- query[[i]],
+      query_i <- query[i]
+    )
 
     mx_results <- run_search(mx_data, query_i, fields, deduplicate)
     topic_hits <- nrow(mx_results)
@@ -158,20 +158,19 @@ mx_reporter <- function(mx_data,
     # run mx_search for and individual terms within each topic,...
     # count hits and print message
     for (j in 1:length(query_i)) {
-
       mx_results <- run_search(mx_data, query_i[j], fields, deduplicate)
       term_hits <- nrow(mx_results)
       message(paste0(query_i[j], ": ", term_hits))
     }
   }
 
-  if(NOT[1] != ""){
-    #Run search excluding not term and subtract num_results
-    #This gives number of hits which were excluded by NOT term
+  if (NOT[1] != "") {
+    # Run search excluding not term and subtract num_results
+    # This gives number of hits which were excluded by NOT term
     not_hits <-
       nrow(
         run_search(mx_data, query, fields, deduplicate, NOT = "")
-        ) - num_results
+      ) - num_results
 
     message(
       cat("\n"),
@@ -182,9 +181,7 @@ mx_reporter <- function(mx_data,
         ") were excluded."
       )
     )
-
   }
-
 }
 
 
@@ -203,8 +200,7 @@ run_search <- function(mx_data,
                        query,
                        fields,
                        deduplicate,
-                       NOT = ""){
-
+                       NOT = "") {
   . <- NULL
   node <- NULL
   link_group <- NULL
@@ -321,10 +317,8 @@ run_search <- function(mx_data,
 #'   Default is TRUE.
 #' @family main
 print_full_results <- function(num_results,
-                               deduplicate){
-
+                               deduplicate) {
   if (num_results > 0) {
-
     # Create Message
     message <- paste0(
       "Found ",
@@ -333,13 +327,14 @@ print_full_results <- function(num_results,
     )
 
     if (!deduplicate) {
-      message <- paste0(message, "\n",
-                        "Note, there may be >1 version of the same record.")
+      message <- paste0(
+        message, "\n",
+        "Note, there may be >1 version of the same record."
+      )
     }
 
     # Print Message
     message(message)
-
   } else {
     message("No records found matching your search.")
   }

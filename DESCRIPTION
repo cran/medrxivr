@@ -1,14 +1,15 @@
 Package: medrxivr
 Title: Access and Search MedRxiv and BioRxiv Preprint Data
-Version: 0.0.5
+Version: 0.1.1
 Authors@R: c(
+    person("Yaoxiang", "Li",
+        role = c("aut", "cre"),
+        email = "liyaoxiang@outlook.com", 
+        comment = c(ORCID="0000-0001-9200-1016")),
     person("Luke", "McGuinness",
-           role = c("aut", "cre"),
-           email = "luke.mcguinness@bristol.ac.uk",
-           comment = c(ORCID = "0000-0001-8730-9761")),
+           role = c("aut")),
     person("Lena", "Schmidt",
-           role = "aut",
-           comment = c(ORCID = "0000-0003-0709-8226")),
+           role = "aut"),
     person("Tuija", "Sonkkila",
            role = "rev"),
     person("Najko", "Jahn",
@@ -27,24 +28,24 @@ Description: An increasingly important source of health-related bibliographic
     that allow users to export their search results to a .BIB file for easy 
     import to a reference manager and to download the full-text PDFs of 
     preprints matching their search criteria.
-License: MIT + file LICENSE
+License: GPL-2
 Encoding: UTF-8
-LazyData: true
 Language: en-US
 URL: https://github.com/ropensci/medrxivr
 BugReports: https://github.com/ropensci/medrxivr/issues
-Imports: methods, dplyr, curl, jsonlite, httr, stringr, rlang, vroom,
-        bib2df, tibble, progress, lubridate, purrr, data.table
+Imports: methods, dplyr, curl, jsonlite, httr, stringr, rlang, bib2df,
+        tibble, progress, lubridate, purrr, data.table
 Suggests: testthat (>= 2.1.0), knitr, rmarkdown, covr, kableExtra,
         spelling
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2021-02-24 16:50:13 UTC; Luke
-Author: Luke McGuinness [aut, cre] (<https://orcid.org/0000-0001-8730-9761>),
-  Lena Schmidt [aut] (<https://orcid.org/0000-0003-0709-8226>),
+Packaged: 2024-10-04 18:55:04 UTC; bach
+Author: Yaoxiang Li [aut, cre] (<https://orcid.org/0000-0001-9200-1016>),
+  Luke McGuinness [aut],
+  Lena Schmidt [aut],
   Tuija Sonkkila [rev],
   Najko Jahn [rev]
-Maintainer: Luke McGuinness <luke.mcguinness@bristol.ac.uk>
+Maintainer: Yaoxiang Li <liyaoxiang@outlook.com>
 Repository: CRAN
-Date/Publication: 2021-02-24 17:20:03 UTC
+Date/Publication: 2024-10-04 20:10:08 UTC

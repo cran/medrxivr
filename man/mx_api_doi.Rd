@@ -29,8 +29,8 @@ Provides programmatic access to data on a single preprint
   identified by a unique Digital Object Identifier (DOI).
 }
 \examples{
-if(interactive()){
-mx_data <- mx_api_doi("10.1101/2020.02.25.20021568")
+if (interactive()) {
+  mx_data <- mx_api_doi("10.1101/2020.02.25.20021568")
 }
 }
 \seealso{

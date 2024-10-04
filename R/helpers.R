@@ -59,7 +59,7 @@ api_to_df <- function(url) {
   # available, while maintaining the informative error if the first page is
   # empty.
   cursor <-
-    stringr::str_split(url,"/") %>%
+    stringr::str_split(url, "/") %>%
     unlist() %>%
     dplyr::last()
 

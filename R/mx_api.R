@@ -26,9 +26,11 @@
 #' @export
 #'
 #' @examples
-#' if(interactive()){
-#' mx_data <- mx_api_content(from_date = "2020-01-01",
-#' to_date = "2020-01-07")
+#' if (interactive()) {
+#'   mx_data <- mx_api_content(
+#'     from_date = "2020-01-01",
+#'     to_date = "2020-01-07"
+#'   )
 #' }
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
@@ -38,13 +40,10 @@ mx_api_content <- function(from_date = "2013-01-01",
                            clean = TRUE,
                            server = "medrxiv",
                            include_info = FALSE) {
-
-
   # Check that the user is connected to the internet
   internet_check()
 
   # Check server
-
   "%notin%" <- Negate("%in%")
 
   if (server %notin% c("medrxiv", "biorxiv")) {
@@ -56,10 +55,10 @@ mx_api_content <- function(from_date = "2013-01-01",
 
   # Get descriptive details and page number
   details_link <- api_link(server, from_date, to_date, "0")
-
   details <- api_to_df(details_link)
 
-  count <- details$messages[1, 6]
+  count <- as.numeric(details$messages[1, 6])
+
   pages <- floor(count / 100)
 
   message("Estimated total number of records as per API metadata: ", count)
@@ -69,25 +68,27 @@ mx_api_content <- function(from_date = "2013-01-01",
     dplyr::filter(doi == "")
 
   # Get data
-  pb <-
-    progress::progress_bar$new(
-      format = paste0(
-        "Downloading... [:bar] :current/:total ",
-        "(:percent) Est. time remaining: :eta"
-      ),
-      total = count
-    )
+  pb <- progress::progress_bar$new(
+    format = paste0(
+      "Downloading... [:bar] :current/:total ",
+      "(:percent) Est. time remaining: :eta"
+    ),
+    total = count
+  )
 
   pb$tick(0)
 
   for (cursor in 0:pages) {
     page <- cursor * 100
 
-    page_link <- api_link(server,
-                          from_date,
-                          to_date,
-                          format(page,
-                                 scientific = FALSE))
+    page_link <- api_link(
+      server,
+      from_date,
+      to_date,
+      format(page,
+        scientific = FALSE
+      )
+    )
 
     tmp <- api_to_df(page_link)
 
@@ -99,12 +100,13 @@ mx_api_content <- function(from_date = "2013-01-01",
   }
 
   # Clean data
-
   message("Number of records retrieved from API: ", nrow(df))
 
-  if (nrow(df)!= count) {
-    message(paste0("The estimated \"total number\" as per the metadata ", #nocov
-    "can sometimes be artifically inflated."))                            #nocov
+  if (nrow(df) != count) {
+    message(paste0(
+      "The estimated \"total number\" as per the metadata ", # nocov
+      "can sometimes be artificially inflated."
+    )) # nocov
   }
 
   if (clean == TRUE) {
@@ -143,8 +145,8 @@ mx_api_content <- function(from_date = "2013-01-01",
 #' @export
 #'
 #' @examples
-#' if(interactive()){
-#' mx_data <- mx_api_doi("10.1101/2020.02.25.20021568")
+#' if (interactive()) {
+#'   mx_data <- mx_api_doi("10.1101/2020.02.25.20021568")
 #' }
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data

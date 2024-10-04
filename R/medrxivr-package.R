@@ -5,7 +5,10 @@
 #' Harbour Laboratory.It also provides functions to search the preprint data,
 #' export it to a .bib file, and download the PDFs associated with specified
 #' records.
-#' @docType package
-#' @name medrxivr
-
+#' @keywords internal
+"_PACKAGE"
 globalVariables(c("doi"))
+
+## usethis namespace: start
+## usethis namespace: end
+NULL
