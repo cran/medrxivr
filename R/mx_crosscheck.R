@@ -6,46 +6,37 @@
 #'   snapshot was taken.
 #'
 #' @examples
-#' \donttest{
-#' mx_crosscheck()
+#' if (interactive()) {
+#'   mx_crosscheck()
 #' }
 #' @family helper
 #' @export
-
 mx_crosscheck <- function() {
   internet_check()
   mx_info()
 
-  # Get number of unique records in the medRxiv archive
+  # Reference count from API metadata
   base_link <- api_link("medrxiv", "2019-01-01", as.character(Sys.Date()), "0")
   details <- api_to_df(base_link)
 
-  # Ensure 'reference' is numeric
-  reference <- as.numeric(details$messages[1, 6])
+  reference <- api_record_count(details$messages)
+
+  # Extracted count from snapshot
+  data <- suppressMessages(mx_search(mx_snapshot(), query = "*", deduplicate = FALSE))
+  extracted <- nrow(data)
+
+  mx_crosscheck_counts(reference, extracted)
+}
+
+mx_crosscheck_counts <- function(reference, extracted) {
   if (is.na(reference)) {
     stop("Reference value is not numeric.")
   }
 
-  # Get number of unique records extracted
-  data <- suppressMessages(mx_search(mx_snapshot(),
-    query = "*",
-    deduplicate = FALSE
-  ))
-
-  # Ensure 'extracted' is numeric
-  extracted <- as.numeric(nrow(data))
-  if (is.na(extracted)) {
-    stop("Extracted value is not numeric.")
-  }
-
   diff <- reference - extracted
-
   if (identical(reference, extracted)) {
     message("No records added/updated since last snapshot.") # nocov
   } else {
-    message(paste0(
-      diff,
-      " new record(s) added/updated since last snapshot"
-    ))
+    message(paste0(diff, " new record(s) added/updated since last snapshot"))
   }
 }

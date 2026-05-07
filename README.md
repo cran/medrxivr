@@ -12,6 +12,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 Downloads.](https://cranlogs.r-pkg.org/badges/grand-total/medrxivr)](https://CRAN.R-project.org/package=medrxivr)
 [![R build
 status](https://github.com/ropensci/medrxivr/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/medrxivr/actions)
+[![Status at rOpenSci software
+peer-review](https://badges.ropensci.org/380_status.svg)](https://github.com/ropensci/software-review/issues/380)
 
 <!-- badges: end -->
 
@@ -19,8 +21,7 @@ An increasingly important source of health-related bibliographic content
 are preprints - preliminary versions of research articles that have yet
 to undergo peer review. The two preprint repositories most relevant to
 health-related sciences are [medRxiv](https://www.medrxiv.org/) and
-[bioRxiv](https://www.biorxiv.org/), both of which are operated by the
-Cold Spring Harbor Laboratory.
+bioRxiv, both of which are operated by the Cold Spring Harbor Laboratory.
 
 The goal of the `medrxivr` R package is two-fold. In the first instance,
 it provides programmatic access to the [Cold Spring Harbour Laboratory
@@ -37,12 +38,15 @@ search criteria.
 
 ## Installation
 
-To install the stable version of the package from CRAN:
+When the package is available from CRAN, install the stable version with:
 
 ``` r
 install.packages("medrxivr")
 library(medrxivr)
 ```
+
+The canonical CRAN package page is
+<https://CRAN.R-project.org/package=medrxivr>.
 
 Alternatively, to install the development version from GitHub, use the
 following code:
@@ -68,17 +72,16 @@ preprint_data <- mx_api_content()
 ```
 
 - `mx_snapshot()` provides access to a static snapshot of the medRxiv
-  database. The snapshot is created each morning at 6am using
-  `mx_api_content()` and is stored as CSV file in the [medrxivr-data
-  repository](https://github.com/mcguinlu/medrxivr-data). This method
-  does not rely on the API (which can become unavailable during peak
-  usage times) and is usually faster (as it reads data from a CSV rather
-  than having to re-extract it from the API). Discrepancies between the
-  most recent static snapshot and the live database can be assessed
-  using `mx_crosscheck()`.
+  database. The package reads a manifest from the `snapshot` release
+  assets for this repository, downloads the referenced compressed CSV
+  files, and caches them locally. This method does not rely on the live
+  API during ordinary use and is usually faster than re-extracting records
+  from the API. The function prints the latest record date included in the
+  snapshot; discrepancies between the most recent static snapshot and the
+  live database can be assessed using `mx_crosscheck()`.
 
 ``` r
-# Get a copy of the database from the daily snapshot
+# Get a copy of the database from the static snapshot
 preprint_data <- mx_snapshot()  
 ```
 
@@ -111,12 +114,11 @@ advanced search strategy.
 ``` r
 # Import the medrxiv database
 preprint_data <- mx_snapshot()
-#> Using medRxiv snapshot - 2022-07-06 01:09
 
 # Perform a simple search
 results <- mx_search(data = preprint_data,
                      query ="dementia")
-#> Found 427 record(s) matching your search.
+#> Found 1045 record(s) matching your search.
 
 # Perform an advanced search
 topic1  <- c("dementia","vascular","alzheimer's")  # Combined with Boolean OR
@@ -125,7 +127,7 @@ myquery <- list(topic1, topic2)                    # Combined with Boolean AND
 
 results <- mx_search(data = preprint_data,
                      query = myquery)
-#> Found 143 record(s) matching your search.
+#> Found 371 record(s) matching your search.
 ```
 
 You can also explore which search terms are contributing most to your
@@ -135,15 +137,15 @@ search by setting `report = TRUE`:
 results <- mx_search(data = preprint_data,
                      query = myquery,
                      report = TRUE)
-#> Found 143 record(s) matching your search.
-#> Total topic 1 records: 2272
-#> dementia: 427
-#> vascular: 1918
-#> alzheimer's: 0
-#> Total topic 2 records: 410
-#> lipids: 157
-#> statins: 61
-#> cholesterol: 255
+#> Found 371 record(s) matching your search.
+#> Total topic 1 records: 5785
+#> dementia: 1045
+#> vascular: 4923
+#> alzheimer's: 1
+#> Total topic 2 records: 888
+#> lipids: 305
+#> statins: 124
+#> cholesterol: 580
 ```
 
 ## Further functionality
@@ -196,9 +198,9 @@ website.](https://docs.ropensci.org/medrxivr/)
 
 ## Linked repositories
 
-See here for the [code used to take the daily
-snapshot](https://github.com/mcguinlu/medrxivr-data) and [the code that
-powers the `medrxivr` web
+See here for the [snapshot release
+assets](https://github.com/ropensci/medrxivr/releases/tag/snapshot) and
+[the code that powers the `medrxivr` web
 app](https://github.com/mcguinlu/medrxivr-app).
 
 ## Other tools/packages for working with medRxiv/bioRxiv data

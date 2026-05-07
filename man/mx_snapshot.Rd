@@ -4,28 +4,41 @@
 \alias{mx_snapshot}
 \title{Access a static snapshot of the medRxiv repository}
 \usage{
-mx_snapshot(commit = "master")
+mx_snapshot(
+  commit = "main",
+  from_date = NULL,
+  to_date = NULL,
+  manifest_url = default_snapshot_manifest_url(),
+  cache = TRUE
+)
 }
 \arguments{
-\item{commit}{Commit hash for the snapshot, taken from
-https://github.com/mcguinlu/medrxivr-data. Allows for reproducible
-searching by specifying the exact snapshot used to perform the searches.
-Defaults to "master", which will return the most recent snapshot.}
+\item{commit}{Deprecated. Only the default value "main" is supported. Use
+`manifest_url` to read a specific snapshot manifest.}
+
+\item{from_date}{Optional earliest date of interest ("YYYY-MM-DD" or Date).
+If supplied, records with `date` earlier than this are excluded.}
+
+\item{to_date}{Optional latest date of interest ("YYYY-MM-DD" or Date).
+If supplied, records with `date` later than this are excluded.}
+
+\item{manifest_url}{URL for a JSON snapshot manifest. Defaults to option
+`medrxivr.snapshot_manifest`, or the package's latest GitHub release
+manifest if that option is unset.}
+
+\item{cache}{Logical. If TRUE, downloaded manifest snapshot files are cached
+between sessions. Defaults to TRUE.}
 }
 \value{
-Formatted dataframe
+A formatted dataframe containing the data from the snapshot artifact,
+  with reconstructed `link_page` and `link_pdf` columns.
 }
 \description{
-[Available for medRxiv only] Rather than downloading a copy of
-  the medRxiv database from the API, which can become unavailable at peak
-  usage times, this allows users to import a maintained static snapshot of
-  the medRxiv repository.
-}
-\examples{
-\donttest{
-mx_data <- mx_snapshot()
-}
-
+[Available for medRxiv only] This function allows users to import
+  a maintained static snapshot of the medRxiv repository, instead of downloading
+  a copy from the API, which can become unavailable during peak usage times.
+  The function reads a manifest-driven snapshot artifact from the package's
+  GitHub release assets by default.
 }
 \seealso{
 Other data-source: 

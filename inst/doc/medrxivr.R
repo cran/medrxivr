@@ -11,39 +11,39 @@ knitr::opts_chunk$set(
 
 
 ## -----------------------------------------------------------------------------
-#  devtools::install_github("mcguinlu/medrxivr")
-#  library(medrxivr)
+# install.packages("medrxivr")
+# library(medrxivr)
 
 ## -----------------------------------------------------------------------------
-#  # Get a copy of the database from the live medRxiv API endpoint
-#  preprint_data <- mx_api_content()
+# # Get a copy of the database from the live medRxiv API endpoint
+# preprint_data <- mx_api_content()
 
 ## -----------------------------------------------------------------------------
-#  # Get a copy of the database from the daily snapshot
-#  preprint_data <- mx_snapshot()
+# # Get a copy of the database from the static snapshot
+# preprint_data <- mx_snapshot()
 
 ## ----eval = TRUE, echo = FALSE, out.width = "500px", out.height = "400px"-----
 
 knitr::include_graphics("data_sources.png")
 
 ## -----------------------------------------------------------------------------
-#  # Get a copy of the database from the live bioRxiv API endpoint
-#  preprint_data <- mx_api_content(server = "biorxiv")
+# # Get a copy of the database from the live bioRxiv API endpoint
+# preprint_data <- mx_api_content(server = "biorxiv")
 
 ## -----------------------------------------------------------------------------
-#  
-#  # Perform a simple search
-#  results <- mx_search(data = preprint_data,
-#                       query ="dementia")
-#  
-#  # Perform an advanced search
-#  topic1  <- c("dementia","vascular","alzheimer's")  # Combined with Boolean OR
-#  topic2  <- c("lipids","statins","cholesterol")     # Combined with Boolean OR
-#  myquery <- list(topic1, topic2)                    # Combined with Boolean AND
-#  
-#  results <- mx_search(data = preprint_data,
-#                       query = myquery)
-#  
+# 
+# # Perform a simple search
+# results <- mx_search(data = preprint_data,
+#                      query ="dementia")
+# 
+# # Perform an advanced search
+# topic1  <- c("dementia","vascular","alzheimer's")  # Combined with Boolean OR
+# topic2  <- c("lipids","statins","cholesterol")     # Combined with Boolean OR
+# myquery <- list(topic1, topic2)                    # Combined with Boolean AND
+# 
+# results <- mx_search(data = preprint_data,
+#                      query = myquery)
+# 
 
 ## ----eval = TRUE, echo = FALSE------------------------------------------------
 
@@ -90,15 +90,15 @@ knitr::kable(mx_variables, format = "html") %>%
   kableExtra::column_spec(2, width = "30em")
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  
-#  mx_export(data = mx_results,
-#            file = tempfile(fileext = ".bib"))
-#  
+# 
+# mx_export(data = mx_results,
+#           file = tempfile(fileext = ".bib"))
+# 
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  
-#  mx_download(results,        # Object returned by mx_search
-#              tempdir(),      # Temporary directory to save PDFs to
-#              create = TRUE)  # Create the directory if it doesn't exist
-#  
+# 
+# mx_download(results,        # Object returned by mx_search
+#             tempdir(),      # Temporary directory to save PDFs to
+#             create = TRUE)  # Create the directory if it doesn't exist
+# 
 

@@ -17,8 +17,9 @@
 #'   data returned by the API. If TRUE, variables containing absolute paths to
 #'   the preprints web-page ("link_page") and PDF ("link_pdf") are generated
 #'   from the "server", "DOI", and "version" variables returned by the API. The
-#'   "title", "abstract" and "authors" variables are converted to title case.
-#'   Finally, the "type" and "server" variables are dropped.
+#'   The "category", "authors" and "author_corresponding" variables are
+#'   converted to title case. Finally, the "type" and "server" variables are
+#'   dropped.
 #'
 #' @return Dataframe with 1 record per row
 #'
@@ -45,7 +46,6 @@ mx_api_content <- function(from_date = "2013-01-01",
 
   # Check server
   "%notin%" <- Negate("%in%")
-
   if (server %notin% c("medrxiv", "biorxiv")) {
     stop(paste(
       "Server not recognised -",
@@ -57,56 +57,58 @@ mx_api_content <- function(from_date = "2013-01-01",
   details_link <- api_link(server, from_date, to_date, "0")
   details <- api_to_df(details_link)
 
-  count <- as.numeric(details$messages[1, 6])
+  count <- api_record_count(details$messages)
+  per_page <- api_page_size(details$messages)
 
-  pages <- floor(count / 100)
-
-  message("Estimated total number of records as per API metadata: ", count)
+  if (is.finite(count) && !is.na(count)) {
+    message("Estimated total number of records as per API metadata: ", count)
+  } else {
+    message("Estimated total number of records as per API metadata: <unavailable>")
+  }
 
   # Create empty dataset
   df <- details$collection %>%
     dplyr::filter(doi == "")
 
-  # Get data
+  # Progress bar: track pages, not records (avoids finished-assertions)
+  total_pages <- if (is.finite(count) && !is.na(count)) ceiling(count / per_page) else NA_integer_
+  if (!is.finite(total_pages) || is.na(total_pages) || total_pages < 1L) total_pages <- 1L
+
+  pb_total <- if (!is.finite(count) || is.na(count)) NA_integer_ else total_pages
   pb <- progress::progress_bar$new(
     format = paste0(
       "Downloading... [:bar] :current/:total ",
       "(:percent) Est. time remaining: :eta"
     ),
-    total = count
+    total = pb_total,
+    clear = TRUE
   )
-
+  on.exit({ if (!pb$finished) pb$terminate() }, add = TRUE)
   pb$tick(0)
 
-  for (cursor in 0:pages) {
-    page <- cursor * 100
-
+  # Get data
+  page_starts <- (seq_len(total_pages) - 1L) * per_page
+  for (page in page_starts) {
     page_link <- api_link(
       server,
       from_date,
       to_date,
-      format(page,
-        scientific = FALSE
-      )
+      format(page, scientific = FALSE)
     )
-
     tmp <- api_to_df(page_link)
-
     tmp <- tmp$collection
-
     df <- rbind(df, tmp)
-
-    pb$tick(100)
+    if (!pb$finished) pb$tick()
   }
 
   # Clean data
   message("Number of records retrieved from API: ", nrow(df))
 
-  if (nrow(df) != count) {
+  if (is.finite(count) && !is.na(count) && nrow(df) != count) {
     message(paste0(
-      "The estimated \"total number\" as per the metadata ", # nocov
+      "The estimated \"total number\" as per the metadata ",
       "can sometimes be artificially inflated."
-    )) # nocov
+    ))
   }
 
   if (clean == TRUE) {
@@ -114,9 +116,20 @@ mx_api_content <- function(from_date = "2013-01-01",
   }
 
   if (include_info == TRUE) {
-    details <-
-      details$messages %>% dplyr::slice(rep(1:dplyr::n(), each = nrow(df)))
-    df <- cbind(df, details)
+    meta <- details$messages
+    if (nrow(df) > 0) {
+      meta <- meta %>%
+        dplyr::slice(rep(1:dplyr::n(), each = nrow(df)))
+    } else {
+      meta <- meta[0, , drop = FALSE]
+    }
+    # Avoid name collisions with collection columns
+    colliding <- intersect(names(meta), names(df))
+    if (length(colliding)) {
+      idx <- match(colliding, names(meta))
+      names(meta)[idx] <- paste0("api_", colliding)
+    }
+    df <- dplyr::bind_cols(df, meta)
   }
 
   tibble::as_tibble(unclass(df))
@@ -136,8 +149,9 @@ mx_api_content <- function(from_date = "2013-01-01",
 #'   data returned by the API. If TRUE, variables containing absolute paths to
 #'   the preprints web-page ("link_page") and PDF ("link_pdf") are generated
 #'   from the "server", "DOI", and "version" variables returned by the API. The
-#'   "title", "abstract" and "authors" variables are converted to title case.
-#'   Finally, the "type" and "server" variables are dropped.
+#'   The "category", "authors" and "author_corresponding" variables are
+#'   converted to title case. Finally, the "type" and "server" variables are
+#'   dropped.
 #'
 #' @return Dataframe containing details on the preprint identified by the DOI.
 #'
@@ -155,7 +169,6 @@ mx_api_doi <- function(doi,
                        server = "medrxiv",
                        clean = TRUE) {
   "%notin%" <- Negate("%in%")
-
   if (server %notin% c("medrxiv", "biorxiv")) {
     stop(paste(
       "Server not recognised -",
@@ -164,10 +177,7 @@ mx_api_doi <- function(doi,
   }
 
   details <- api_to_df(api_link(server, doi))
-
   df <- details$collection
-
-  # Clean data
 
   if (clean == TRUE) {
     df <- clean_api_df(df)

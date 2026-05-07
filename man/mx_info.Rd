@@ -4,12 +4,15 @@
 \alias{mx_info}
 \title{Provide information on the medRxiv snapshot used to perform the search}
 \usage{
-mx_info(commit = "master")
+mx_info(commit = "main", manifest_url = default_snapshot_manifest_url())
 }
 \arguments{
-\item{commit}{Commit hash for the snapshot, taken from
-https://github.com/mcguinlu/medrxivr-data. Defaults to "master", which will
-return info on the most recent snapshot.}
+\item{commit}{Deprecated. Only the default value "main" is supported. Use
+`manifest_url` to read a specific snapshot manifest.}
+
+\item{manifest_url}{URL for a JSON snapshot manifest. Defaults to option
+`medrxivr.snapshot_manifest`, or the package's snapshot release manifest if
+that option is unset.}
 }
 \value{
 Message with snapshot details
