@@ -1,6 +1,6 @@
-6294d0857b930bbce453c86cade196f5 *DESCRIPTION
+31b604a660c9ed2208ce4ccf41264543 *DESCRIPTION
 22580cce7feab4b1e6d6d291f66bcd0a *NAMESPACE
-b56f326c1e1f8e721b889f40727d9970 *NEWS.md
+64424b380dbee48619f2c0b2dbe21fa8 *NEWS.md
 468c4f0900085ed917385b8e379eb034 *R/helpers.R
 77b1f4873210f296378863f5516ee15f *R/medrxivr-package.R
 d16eb374954d6e106bd86e972daeadc5 *R/mx_api.R
@@ -9,14 +9,14 @@ dcd2296d6e1f6e956b8bb0584c4bd6d6 *R/mx_download.R
 f0e6f49ea9488212e1c84be8a5555933 *R/mx_export.R
 528ccb32f959eaf63b21f30a39e9ec71 *R/mx_info.R
 4a40445520ac02c00b49e5deb578b9d1 *R/mx_search.R
-94712a5697d5b21b421a4009305b4853 *R/mx_snapshot.R
+5d087d01be0ad6e674856a404451ba72 *R/mx_snapshot.R
 83d9f6daf5aacf47b5e294dc583b28a7 *R/mx_syntax.R
-30bae1a894cadd0d359a8786d81f0d81 *README.md
+1e1f08387d9b8f1f31243db4cf391375 *README.md
 109967e81faf689964ed39d353bd9537 *build/vignette.rds
 e4f8da97cec114210a333dac04e6376a *inst/WORDLIST
 73369dcadf7e4502a86db505a5abe058 *inst/doc/medrxivr.R
 92e67a86eef96569a1096abca30301e3 *inst/doc/medrxivr.Rmd
-a74dcd5d62f182962b985461762511f2 *inst/doc/medrxivr.html
+163722da36aa53926f2cfe5c915d0cf7 *inst/doc/medrxivr.html
 9bd130405efb232ef3565526c055b94a *man/api_link.Rd
 ecb0cceb530ecb349a4e505391fb3ad4 *man/api_page_size.Rd
 daa5a01069a994ddcdc63890838a71e4 *man/api_record_count.Rd
@@ -29,7 +29,7 @@ f3e90d282bc4efde52158a9652af2421 *man/fix_caps.Rd
 9e0c56aa9bc3aebe1958bb1444bcc19c *man/fix_wildcard.Rd
 4e1a3600cf31a25ad29e9fad3467473c *man/inform_snapshot_date.Rd
 d9ddfcc46231af22d36be9804a1b0839 *man/internet_check.Rd
-4c755c739a3eb66c174af13416c16122 *man/medrxivr-package.Rd
+34f1a7b02039cdee26b44f03878076ae *man/medrxivr-package.Rd
 1d03eb72a9ea175be6dac4d7f163563c *man/mx_api_content.Rd
 f262aa0d9b6d575cb9e456c28ed42c10 *man/mx_api_doi.Rd
 de404a1f9db3eea55c26a76f4e18199f *man/mx_caps.Rd
@@ -53,7 +53,7 @@ f5cf9b9b74ef6bd31404df21c4c4f525 *tests/testthat/test-crosscheck.R
 7e5c6904ba48f199b01447aa88fbf3cd *tests/testthat/test-helpers.R
 b2342785315550960775c6b1175a6f48 *tests/testthat/test-info.R
 68f21afb6727e0ec11da15d67418d7bb *tests/testthat/test-search.R
-9d778326d41f25b59410922213d0262b *tests/testthat/test-snapshot.R
+e043f0a605b6307129ca4d036702543f *tests/testthat/test-snapshot.R
 9901b09de4e776cbc4d3f1740ca403df *tests/testthat/test-syntax.R
 4024c7b81d66b88b022ae4c2d1cd92c6 *vignettes/data_sources.png
 92e67a86eef96569a1096abca30301e3 *vignettes/medrxivr.Rmd
